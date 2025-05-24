@@ -27,11 +27,19 @@ export default function ConnectActivityGenerator() {
     subjectArea: "",
     unitTopic: "",
   });
-  const [activity, setActivity] = useState(null);
+
+  const [activity, setActivity] = useState<{
+    type: string;
+    icon: string;
+    title: string;
+    prompt: string;
+    questions: string[];
+  } | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -78,7 +86,7 @@ export default function ConnectActivityGenerator() {
   };
 
   // Sample prompt generator - in production this would be AI-generated
-  const generatePrompt = (data) => {
+  const generatePrompt = (data: { yearLevel: string; subjectArea: string; unitTopic: string }) => {
     const { yearLevel, subjectArea, unitTopic } = data;
 
     if (subjectArea === "Mathematics") {
@@ -91,7 +99,7 @@ export default function ConnectActivityGenerator() {
   };
 
   // Sample questions generator - in production this would be AI-generated
-  const generateQuestions = (data, activityType) => {
+  const generateQuestions = (data: { subjectArea: string; unitTopic: string }, activityType: string) => {
     const { subjectArea, unitTopic } = data;
 
     if (activityType === "Odd One Out") {
@@ -173,20 +181,6 @@ export default function ConnectActivityGenerator() {
                 ))}
               </select>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Unit/Topic
-              </label>
-              <input
-                type="text"
-                name="unitTopic"
-                value={formData.unitTopic}
-                onChange={handleChange}
-                placeholder="e.g. Fractions, Photosynthesis, etc."
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
           </div>
 
           {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -199,54 +193,7 @@ export default function ConnectActivityGenerator() {
             {isLoading ? "Generating..." : "Generate Connect Activity"}
           </button>
         </div>
-      ) : (
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-indigo-500 activity-display">
-          <div className="activity-header mb-8">
-            <h2 className="text-2xl font-bold text-indigo-700">
-              {activity.title}
-            </h2>
-            <div className="mt-2 p-4 bg-indigo-50 rounded-md border border-indigo-100">
-              <p className="text-lg">{activity.prompt}</p>
-            </div>
-          </div>
-
-          <div className="activity-questions mb-8">
-            <h3 className="text-lg font-semibold mb-3 text-gray-700">
-              Discussion Questions:
-            </h3>
-            <ul className="space-y-3">
-              {activity.questions.map((question, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="bg-indigo-100 text-indigo-800 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 mt-0.5">
-                    {index + 1}
-                  </span>
-                  <span>{question}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="flex justify-between">
-            <button
-              onClick={resetForm}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-md font-medium transition duration-150"
-            >
-              Create New Activity
-            </button>
-
-            <button
-              onClick={() => window.print()}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md font-medium transition duration-150"
-            >
-              Print / Save
-            </button>
-          </div>
-        </div>
       )}
-
-      <footer className="mt-8 text-center text-gray-600 text-sm">
-        <p>Connect Activity Generator • For Classroom Use</p>
-      </footer>
     </div>
   );
 }

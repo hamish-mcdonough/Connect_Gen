@@ -12,7 +12,11 @@
     "loader-utils": "3.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+<<<<<<< HEAD
     "react-scripts": "5.0.1"
+=======
+    "react-scripts": "^5.0.1"
+>>>>>>> 1571cae7 (Initial commit)
   },
   "devDependencies": {
     "@types/react": "18.2.38",
@@ -31,4 +35,8 @@
     "not ie <= 11",
     "not op_mini all"
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1571cae7 (Initial commit)
